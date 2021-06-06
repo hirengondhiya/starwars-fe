@@ -1,11 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { addPeople } from "./peopleSlice";
 import swapiApi from "../api/swapiApi";
 
 export const fetchPeoplePageById = createAsyncThunk(
   "peoplePage/fetchPeoplePageById",
-  async (params, thunkApi) => {
+  async (params, { dispatch }) => {
     const resp = await swapiApi.get("people", { params });
-    return { ...params, ...resp.data };
+    dispatch(addPeople({ people: resp.data.results }));
+    const page = {
+      ...params,
+      ...resp.data,
+      results: [...resp.data.results.map(({ name }) => name)],
+    };
+    return page;
   },
   {
     condition: (arg, { getState }) => {

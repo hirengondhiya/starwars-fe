@@ -11,8 +11,8 @@ export function PeopleTable({ peopleData }) {
         </tr>
       </thead>
       <tbody>
-        {peopleData.map(({ name, height, mass }) => (
-          <PersonItem key={name} name={name} height={height} mass={mass} />
+        {peopleData.map((name) => (
+          <PersonItem key={name} name={name} />
         ))}
       </tbody>
     </table>
