@@ -9,7 +9,13 @@ const peopleSlice = createSlice({
   initialState: peopleAdapter.getInitialState(),
   reducers: {
     addPeople(state, action) {
-      peopleAdapter.addMany(state, action.payload.people);
+      const people = action.payload.people.map((person) => ({
+        ...person,
+        films: person.films.map((film) =>
+          film.replace("http://swapi.dev/api/films/", "").replace("/", "")
+        ),
+      }));
+      peopleAdapter.addMany(state, people);
     },
   },
 });
