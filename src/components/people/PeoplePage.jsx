@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { PeopleTable } from "./PeopleTable";
+import { PersonDetails } from "./PersonDetails";
 import { fetchPeoplePageById } from "../../store/peoplePageSlice";
+
 export function PeoplePage() {
   const [pageId, setPageId] = useState("1");
   const dispatch = useDispatch();
@@ -11,10 +13,12 @@ export function PeoplePage() {
   const page = useSelector((state) =>
     state.peoplePages.find(({ page }) => page === pageId)
   );
+  const selectedPerson = useSelector((state) => state.selectedPerson);
   function handleButtonClick(e) {
     const newPageId = page[e.target.name].split("page=")[1];
     setPageId(newPageId);
   }
+
   if (page) {
     return (
       <>
@@ -35,6 +39,9 @@ export function PeoplePage() {
             Next
           </button>
         </p>
+        {selectedPerson && selectedPerson.name && (
+          <PersonDetails name={selectedPerson.name} />
+        )}
       </>
     );
   }
